@@ -27,11 +27,14 @@ const TodoItem = ({ todo }: TodoItemProps): JSX.Element => {
     }
   );
 
-  const { mutateAsync: mutateDelete } = useMutation(() => deleteTodo(todo.id), {
-    onSuccess: () => {
-      queryClient.invalidateQueries("todos");
-    },
-  });
+  const { mutateAsync: mutateDelete, isLoading } = useMutation(
+    () => deleteTodo(todo.id),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("todos");
+      },
+    }
+  );
 
   return (
     <li className="todo-item">
@@ -43,7 +46,9 @@ const TodoItem = ({ todo }: TodoItemProps): JSX.Element => {
         name="completed"
         id={`${todo.id}`}
       />
-      <button onClick={() => mutateDelete()}>Delete task</button>
+      <button disabled={isLoading} onClick={() => mutateDelete()}>
+        Delete task
+      </button>
     </li>
   );
 };
