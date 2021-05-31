@@ -24,8 +24,6 @@ any): Promise<AirTableResponse> => {
 
     const data: AirTableResponse = await res.json();
 
-    console.log(`data`, data);
-
     return data;
   } catch (e) {
     console.log(e);
@@ -71,6 +69,24 @@ export const toggleCompleted = async (id: number, completed: boolean) => {
         },
       }),
     });
+    const data = await res.json();
+
+    return data;
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+};
+
+export const deleteTodo = async (id: number) => {
+  try {
+    const res = await fetch(BASE_URL + `/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${AUTHORIZATION_HEADER}`,
+      },
+    });
+
     const data = await res.json();
 
     return data;
