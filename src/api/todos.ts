@@ -24,15 +24,18 @@ any): Promise<AirTableResponse> => {
 
     const data: AirTableResponse = await res.json();
 
+    console.log(`data`, data);
+
     return data;
   } catch (e) {
+    console.log(e);
     throw e;
   }
 };
 
 export const addTodo = async (title: string) => {
   try {
-    const res = await fetch(`${BASE_URL}`, {
+    const res = await fetch(BASE_URL, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${AUTHORIZATION_HEADER}`,
@@ -49,8 +52,30 @@ export const addTodo = async (title: string) => {
 
     return data;
   } catch (e) {
+    console.log(e);
     throw e;
   }
 };
 
-export const ToggleCompleted = async (id: number) => {};
+export const toggleCompleted = async (id: number, completed: boolean) => {
+  try {
+    const res = await fetch(BASE_URL + `/${id}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${AUTHORIZATION_HEADER}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fields: {
+          completed,
+        },
+      }),
+    });
+    const data = await res.json();
+
+    return data;
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+};
